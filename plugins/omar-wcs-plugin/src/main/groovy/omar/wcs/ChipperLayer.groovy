@@ -26,7 +26,7 @@ class ChipperLayer extends DirectLayer
 
   public ChipperLayer(File imageFile, int entry = 0)
   {
-    def info = ImageInfoUtil.getImageInfoAsMap( imageFile )
+    def info = ImageInfoUtil.getImageInfoAsMap( imageFile.absolutePath )
 
     bbox = new Bounds(
         info."image${entry}".geometry.ll_lon.toDouble(),
