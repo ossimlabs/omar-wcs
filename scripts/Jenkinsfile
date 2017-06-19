@@ -83,7 +83,8 @@ node("master"){
             {
                sh """
                 pushd ${workspaceDir}/${appName}/apps/${appName}-app
-                ./gradlew artifactoryPublish
+                //./gradlew artifactoryPublish
+                gradle artifactoryPublish
                 popd
                 """
             }
@@ -100,7 +101,8 @@ node("master"){
             sh """
 //            pushd ${workspaceDir}/${appName}/apps/${appName}-app
             pushd ${workspaceDir}/${appName}
-            ./gradlew ${GRADLE_TASK}
+            //./gradlew ${GRADLE_TASK}
+            gradle ${GRADLE_TASK}
             popd
             """
         }
