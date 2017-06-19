@@ -69,42 +69,13 @@ node("master"){
                             passwordVariable: 'ARTIFACTORY_PASSWORD']])
             {
                sh """
+                source ${env.HOME}/.sdkman/bin/sdkman-init.sh
                 pushd ${workspaceDir}/${appName}/apps/${appName}-app
                 gradle :${appName}-app:artifactoryPublish
                 popd
                 """
             }
        } 
-/*      stage ("Publish Plugin Artifactory")
-      {
-          withCredentials([[$class: 'UsernamePasswordMultiBinding', 
-                            credentialsId: 'artifactoryCredentials',
-                            usernameVariable: 'ARTIFACTORY_USER', 
-                            passwordVariable: 'ARTIFACTORY_PASSWORD']])
-            {
-                    sh """
-                    source ${env.HOME}/.sdkman/bin/sdkman-init.sh
-                    pushd ${workspaceDir}/${appName}/plugins/${appName}-plugin
-                    ./gradlew artifactoryPublish
-                    popd
-                    """
-              }
-      }
-      stage ("Publish App Artifactory")
-      {
-           withCredentials([[$class: 'UsernamePasswordMultiBinding', 
-                            credentialsId: 'artifactoryCredentials',
-                            usernameVariable: 'ARTIFACTORY_USER', 
-                            passwordVariable: 'ARTIFACTORY_PASSWORD']])
-            {
-               sh """
-                pushd ${workspaceDir}/${appName}/apps/${appName}-app
-                gradle artifactoryPublish
-                popd
-                """
-            }
-       } 
-*/
       stage ("Publish Docker App") 
       {      
         withCredentials([[$class: 'UsernamePasswordMultiBinding', 
@@ -114,6 +85,7 @@ node("master"){
         {
             // Run all tasks on the app. This includes pushing to OpenShift and S3.
             sh """
+            source ${env.HOME}/.sdkman/bin/sdkman-init.sh
             pushd ${workspaceDir}/${appName}
             gradle :${appName}-app:${GRADLE_TASK}
             popd
@@ -126,7 +98,7 @@ node("master"){
         currentBuild.result = "FAILED"
         notifyObj?.notifyFailed()
     }
-//  stage("Clean Workspace"){
-//     step([$class: 'WsCleanup'])
-//  }
+  stage("Clean Workspace"){
+     step([$class: 'WsCleanup'])
+  }
 }
