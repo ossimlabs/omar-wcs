@@ -54,6 +54,7 @@ node("master"){
                             passwordVariable: 'ARTIFACTORY_PASSWORD']])
             {
                     sh """
+                    source ${env.HOME}/.sdkman/bin/sdkman-init.sh
                     pushd ${workspaceDir}/${appName}
                     gradle artifactoryPublish
                     popd
@@ -68,6 +69,7 @@ node("master"){
                             passwordVariable: 'ARTIFACTORY_PASSWORD']])
             {
                     sh """
+                    source ${env.HOME}/.sdkman/bin/sdkman-init.sh
                     pushd ${workspaceDir}/${appName}/plugins/${appName}-plugin
                     ./gradlew artifactoryPublish
                     popd
@@ -83,7 +85,6 @@ node("master"){
             {
                sh """
                 pushd ${workspaceDir}/${appName}/apps/${appName}-app
-                //./gradlew artifactoryPublish
                 gradle artifactoryPublish
                 popd
                 """
