@@ -57,25 +57,11 @@ node("master"){
                     source ${env.HOME}/.sdkman/bin/sdkman-init.sh
                     pushd ${workspaceDir}/${appName}
                     gradle :${appName}-plugin:artifactoryPublish
+                    gradle :${appName}-app:artifactoryPublish
                     popd
                     """
               }
       }
-      stage ("Publish App Artifactory")
-      {
-           withCredentials([[$class: 'UsernamePasswordMultiBinding', 
-                            credentialsId: 'artifactoryCredentials',
-                            usernameVariable: 'ARTIFACTORY_USER', 
-                            passwordVariable: 'ARTIFACTORY_PASSWORD']])
-            {
-               sh """
-                source ${env.HOME}/.sdkman/bin/sdkman-init.sh
-                pushd ${workspaceDir}/${appName}
-                gradle :${appName}-app:artifactoryPublish
-                popd
-                """
-            }
-       } 
       stage ("Publish Docker App") 
       {      
         withCredentials([[$class: 'UsernamePasswordMultiBinding', 
