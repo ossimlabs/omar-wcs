@@ -56,11 +56,25 @@ node("master"){
                     sh """
                     source ${env.HOME}/.sdkman/bin/sdkman-init.sh
                     pushd ${workspaceDir}/${appName}
-                    gradle artifactoryPublish
+                    gradle :${appName}-plugin:artifactoryPublish
                     popd
                     """
               }
       }
+      stage ("Publish App Artifactory")
+      {
+           withCredentials([[$class: 'UsernamePasswordMultiBinding', 
+                            credentialsId: 'artifactoryCredentials',
+                            usernameVariable: 'ARTIFACTORY_USER', 
+                            passwordVariable: 'ARTIFACTORY_PASSWORD']])
+            {
+               sh """
+                pushd ${workspaceDir}/${appName}/apps/${appName}-app
+                gradle :${appName}-app:artifactoryPublish
+                popd
+                """
+            }
+       } 
 /*      stage ("Publish Plugin Artifactory")
       {
           withCredentials([[$class: 'UsernamePasswordMultiBinding', 
@@ -101,7 +115,7 @@ node("master"){
             // Run all tasks on the app. This includes pushing to OpenShift and S3.
             sh """
             pushd ${workspaceDir}/${appName}
-            gradle ${GRADLE_TASK}
+            gradle :${appName}-app:${GRADLE_TASK}
             popd
             """
         }
