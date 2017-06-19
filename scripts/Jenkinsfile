@@ -16,7 +16,6 @@ node("master"){
     def omarCommonProjName = "omar-common"
     env.OMAR_COMMON_PROPERTIES="${workspaceDir}/${omarCommonProjName}/omar-common-properties.gradle"
     env.O2_DEV_HOME = pwd()
-    println "O2_DEV_HOME ====================== ${env.O2_DEV_HOME}"
     stage("Checkout"){
         dir("ossim-ci") {
             git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/ossim-ci.git"
@@ -47,7 +46,21 @@ node("master"){
     }
 
     try {
-      stage ("Publish Plugin Artifactory")
+      stage ("Publish Artifactory")
+      {
+          withCredentials([[$class: 'UsernamePasswordMultiBinding', 
+                            credentialsId: 'artifactoryCredentials',
+                            usernameVariable: 'ARTIFACTORY_USER', 
+                            passwordVariable: 'ARTIFACTORY_PASSWORD']])
+            {
+                    sh """
+                    pushd ${workspaceDir}/${appName}
+                    ./gradlew artifactoryPublish
+                    popd
+                    """
+              }
+      }
+/*      stage ("Publish Plugin Artifactory")
       {
           withCredentials([[$class: 'UsernamePasswordMultiBinding', 
                             credentialsId: 'artifactoryCredentials',
@@ -75,7 +88,7 @@ node("master"){
                 """
             }
        } 
-
+*/
       stage ("Publish Docker App") 
       {      
         withCredentials([[$class: 'UsernamePasswordMultiBinding', 
@@ -85,7 +98,8 @@ node("master"){
         {
             // Run all tasks on the app. This includes pushing to OpenShift and S3.
             sh """
-            pushd ${workspaceDir}/${appName}/apps/${appName}-app
+//            pushd ${workspaceDir}/${appName}/apps/${appName}-app
+            pushd ${workspaceDir}/${appName}
             ./gradlew ${GRADLE_TASK}
             popd
             """
