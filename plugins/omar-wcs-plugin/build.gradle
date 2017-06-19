@@ -54,9 +54,20 @@ dependencyManagement {
 }
 
 dependencies {
-  compile(group: "io.ossim.omar.plugins", name: "omar-oms-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-  compile(group: "io.ossim.omar.plugins", name: "omar-geoscript-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-  compile(group: "io.ossim.omar.plugins", name: "omar-hibernate-spatial-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+  if(System.env.O2_DEV_HOME)
+  {
+    compile project(':omar-oms-plugin')
+    compile project(':omar-geoscript-plugin')
+    compile project(':omar-hibernate-spatial-plugin')
+
+  }
+  else
+  {
+    compile(group: "io.ossim.omar.plugins", name: "omar-oms-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+    compile(group: "io.ossim.omar.plugins", name: "omar-geoscript-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+    compile(group: "io.ossim.omar.plugins", name: "omar-hibernate-spatial-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+    
+  }
   compile "org.springframework.boot:spring-boot-starter-logging"
   compile "org.springframework.boot:spring-boot-autoconfigure"
   compile "org.grails:grails-core"
