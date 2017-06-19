@@ -70,7 +70,7 @@ node("master"){
             {
                sh """
                 source ${env.HOME}/.sdkman/bin/sdkman-init.sh
-                pushd ${workspaceDir}/${appName}/apps/${appName}-app
+                pushd ${workspaceDir}/${appName}
                 gradle :${appName}-app:artifactoryPublish
                 popd
                 """
