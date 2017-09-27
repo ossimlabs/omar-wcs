@@ -46,6 +46,24 @@ node(""){
     }
 
     try {
+        stage('SonarQube analysis') {
+            withSonarQubeEnv('sonar_cloud') {
+                // requires SonarQube Scanner for Gradle 2.1+
+                // It's important to add --info because of SONARJNKNS-281
+                sh """
+                  pushd ${workspaceDir}/${appName}/
+                  ./gradlew --info :${appName}-plugin:sonarqube
+                  ./gradlew --info :${appName}-app:sonarqube
+                  popd
+                """
+            }
+        }
+    }
+    catch (e) {
+        echo e.toString()
+    }
+
+    try {
       stage ("Publish Artifactory")
       {
           withCredentials([[$class: 'UsernamePasswordMultiBinding', 
