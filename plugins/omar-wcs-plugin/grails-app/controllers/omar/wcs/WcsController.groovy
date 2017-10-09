@@ -5,10 +5,12 @@ import com.wordnik.swagger.annotations.ApiImplicitParam
 import com.wordnik.swagger.annotations.ApiImplicitParams
 import com.wordnik.swagger.annotations.ApiOperation
 import omar.core.BindUtil
+import groovy.util.logging.Slf4j
 
 @Api( value = "wcs",
     description = "WCS Support"
 )
+@Slf4j
 class WcsController
 {
   def webCoverageService
@@ -16,6 +18,7 @@ class WcsController
 
   def index()
   {
+      log.info "index: ${params} ${request.method}"
 //    println "index: ${params} ${request.method}"
 
     def wcsParams = params - params.subMap( ['controller', 'format'] )
@@ -55,7 +58,8 @@ class WcsController
   ] )
   def getCapabilities(GetCapabilitiesRequest wcsParams)
   {
-    println params
+    log.info "GetCapabilities: ${params}"
+//    println params
 //    println "getCapabilities: ${params}"
     BindUtil.fixParamNames( GetCapabilitiesRequest, params )
     bindData( wcsParams, params )
@@ -76,9 +80,8 @@ class WcsController
   ] )
   def describeCoverage(DescribeCoverageRequest wcsParams)
   {
-    println params
-
-//    println "describeCoverage: ${params}"
+    log.info "DescribeCoverage: ${params}"
+//    println params
     BindUtil.fixParamNames( DescribeCoverageRequest, params )
     bindData( wcsParams, params )
 
@@ -102,9 +105,9 @@ class WcsController
   ] )
   def getCoverage(GetCoverageRequest wcsParams)
   {
-    println params
+    log.info "GetCoverage: ${params}"
+//    println params
 
-//    println "getCoverage: ${params}"
     BindUtil.fixParamNames( GetCoverageRequest, params )
     bindData( wcsParams, params )
 
