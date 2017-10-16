@@ -21,9 +21,6 @@ class WcsController
 
   def index()
   {
-      log.info "index: ${params} ${request.method}"
-//    println "index: ${params} ${request.method}"
-
     def wcsParams = params - params.subMap( ['controller', 'format'] )
     def operation = wcsParams.find { it.key.equalsIgnoreCase( 'request' ) }
 
@@ -62,8 +59,7 @@ class WcsController
   def getCapabilities(GetCapabilitiesRequest wcsParams)
   {
     log.info "GetCapabilities: ${params}"
-//    println params
-//    println "getCapabilities: ${params}"
+
     BindUtil.fixParamNames( GetCapabilitiesRequest, params )
     bindData( wcsParams, params )
 
@@ -84,7 +80,7 @@ class WcsController
   def describeCoverage(DescribeCoverageRequest wcsParams)
   {
     log.info "DescribeCoverage: ${params}"
-//    println params
+
     BindUtil.fixParamNames( DescribeCoverageRequest, params )
     bindData( wcsParams, params )
 
@@ -109,7 +105,6 @@ class WcsController
   def getCoverage(GetCoverageRequest wcsParams)
   {
     log.info "GetCoverage: ${params}"
-//    println params
 
     BindUtil.fixParamNames( GetCoverageRequest, params )
     bindData( wcsParams, params )
