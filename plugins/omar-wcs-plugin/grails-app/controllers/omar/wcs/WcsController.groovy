@@ -46,7 +46,9 @@ class WcsController
     }
   }
 
-  @ApiOperation( value = "Get the capabilities of the server", produces = 'application/xml' )
+  @ApiOperation( value = "Get the capabilities of the server", 
+                 produces = 'application/xml',
+                  httpMethod = "GET" )
   @ApiImplicitParams( [
       @ApiImplicitParam( name = 'service', value = 'OGC Service type', allowableValues = "WCS", defaultValue = 'WCS', paramType = 'query', dataType = 'string', required = true ),
       @ApiImplicitParam( name = 'version', value = 'Version to request', allowableValues = "1.0.0", defaultValue = '1.0.0', paramType = 'query', dataType = 'string', required = true ),
@@ -68,7 +70,9 @@ class WcsController
     render contentType: results.contentType, text: results.buffer
   }
 
-  @ApiOperation( value = "Get the description of coverage from the server", produces = 'application/xml' )
+  @ApiOperation( value = "Get the description of coverage from the server", 
+                  produces = 'application/xml',
+                  httpMethod = "GET" )
   @ApiImplicitParams( [
       @ApiImplicitParam( name = 'service', value = 'OGC Service type', allowableValues = "WCS", defaultValue = 'WCS', paramType = 'query', dataType = 'string', required = true ),
       @ApiImplicitParam( name = 'version', value = 'Version to request', allowableValues = "1.0.0", defaultValue = '1.0.0', paramType = 'query', dataType = 'string', required = true ),
@@ -89,7 +93,9 @@ class WcsController
     render contentType: results.contentType, text: results.buffer
   }
 
-  @ApiOperation( value = "Get image from the server", produces = 'image/tiff,application/xml,application/json' )
+  @ApiOperation( value = "Get image from the server", 
+                 produces = 'image/tiff,application/xml,application/json',
+                 httpMethod = "GET" )
   @ApiImplicitParams( [
       @ApiImplicitParam( name = 'service', value = 'OGC service type', allowableValues = "WCS", defaultValue = 'WCS', paramType = 'query', dataType = 'string', required = true ),
       @ApiImplicitParam( name = 'version', value = 'Version to request', allowableValues = "1.0.0", defaultValue = '1.0.0', paramType = 'query', dataType = 'string', required = true ),
