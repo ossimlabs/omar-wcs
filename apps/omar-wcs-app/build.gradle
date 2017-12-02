@@ -101,6 +101,9 @@ dependencies {
   // testRuntime "net.sourceforge.htmlunit:htmlunit:2.23"
   // compile "org.grails.plugins:grails3-cors-interceptor:1.1.0"
   //
+
+  compile "de.codecentric:spring-boot-admin-starter-client:1.5.4"
+  
   compile "org.springframework.cloud:spring-cloud-starter-config"
   compile "org.springframework.cloud:spring-cloud-starter-eureka"
 
@@ -147,6 +150,5 @@ publishing {
 
 bootRun {
     jvmArgs = [
-            "-Dlogging.config=${project.projectDir}/grails-app/conf/logback.groovy"
     ]
 }

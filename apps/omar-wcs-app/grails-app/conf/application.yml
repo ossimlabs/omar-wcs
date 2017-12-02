@@ -1,4 +1,41 @@
 ---
+# Define the production database values
+environments:
+  production:
+    dataSource:
+      pooled: true
+      jmxExport: true
+      driverClassName: org.postgresql.Driver
+      dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+      url: jdbc:postgres://localhost:5432/omar_db
+      username: postgres
+      password: password
+
+logging:
+  config: classpath:logback.groovy
+
+omar:
+  wms:
+    app:
+      geoscript:
+        url: http://localhost:8083/omar-geoscript/geoscriptApi
+
+# Set the context path for the application.
+#server:
+#  contextPath: /omar-wcs
+
+# Define the http protocols that swagger can use
+swagger:
+  schemes:
+    - HTTPS
+    - HTTP
+
+wms:
+  oms:
+    chipper:
+      url: http://localhost:8081/chipper
+
+---
 grails:
     cors:
       enabled: true
@@ -29,10 +66,23 @@ spring:
 
 # Spring Actuator Endpoints are Disabled by Default
 endpoints:
-    enabled: false
-    jmx:
-        enabled: true
-
+  enabled: true
+  health:
+    enabled: true
+  actuator:
+    sensitive: false
+  beans:
+    sensitive: false
+  metrics:
+    sensitive: false
+  configprops:
+    sensitive: false
+  trace:
+    sensitive: false
+  mappings:
+    sensitive: false
+  env:
+    sensitive: false
 ---
 grails:
     mime:
@@ -113,7 +163,7 @@ environments:
             url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
         dataSource:
-            dbCreate: none
+            dbCreate: update
             url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
             properties:
                 jmxEnabled: true
@@ -133,16 +183,3 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
-
----
-wms:
-  oms:
-    chipper:
-      url: http://localhost:8081/chipper
-
----
-omar:
-  wms:
-    app:
-      geoscript:
-        url: http://localhost:8083/omar-geoscript/geoscriptApi
