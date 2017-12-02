@@ -479,7 +479,7 @@ class WebCoverageService
 
     requestInfoLog = new JsonBuilder(timestamp: startTime.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
             requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
-            width: wcsParams?.width, height: wcsParams?.height, bbox: bbox?.toString(), status: status, endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"),
+            width: wcsParams?.width, height: wcsParams?.height, bbox: wcsParams?.bbox, status: status, endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"),
             responseTime: responseTime, responseSize: buffer.toString().bytes.length)
 
     log.info requestInfoLog.toString()
