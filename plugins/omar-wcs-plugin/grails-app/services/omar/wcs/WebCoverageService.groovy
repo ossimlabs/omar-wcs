@@ -1,7 +1,7 @@
 package omar.wcs
 
 import geoscript.workspace.Workspace
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import groovy.json.JsonBuilder
 import groovy.xml.StreamingMarkupBuilder
 
@@ -9,7 +9,9 @@ import geoscript.geom.Bounds
 import geoscript.render.Map as GeoScriptMap
 import omar.geoscript.LayerInfo
 
-@Transactional( readOnly = true )
+import omar.core.DateUtil
+
+@Transactional(readOnly = true)
 class WebCoverageService
 {
   def grailsLinkGenerator
@@ -37,7 +39,7 @@ class WebCoverageService
     Date startTime = new Date()
     def responseTime
     def requestInfoLog
-    def status = 200
+    def httpStatus = 200
 
     def contentType
     def buffer
@@ -160,13 +162,13 @@ class WebCoverageService
           {
             contentType = 'application/vnd.ogc.se_xml'
             buffer = createErrorMessage( e )
-            status = 400
+            httpStatus = 400
             Date endTime = new Date()
             responseTime = Math.abs(startTime.getTime() - endTime.getTime())
 
-            requestInfoLog = new JsonBuilder(timestamp: startTime.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+            requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
                     requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
-                    status: status, endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"),
+                    httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
                     responseTime: responseTime, responseSize: buffer.toString().bytes.length)
 
             log.info requestInfoLog.toString()
@@ -204,16 +206,16 @@ class WebCoverageService
     {
       contentType = 'application/vnd.ogc.se_xml'
       buffer = createErrorMessage( e )
-      status = 400
+      httpStatus = 400
     }
 
 
     Date endTime = new Date()
     responseTime = Math.abs(startTime.getTime() - endTime.getTime())
 
-    requestInfoLog = new JsonBuilder(timestamp: startTime.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+    requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
             requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
-            status: status, endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"),
+            httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
             responseTime: responseTime, responseSize: buffer.toString().bytes.length)
 
     log.info requestInfoLog.toString()
@@ -303,7 +305,7 @@ class WebCoverageService
     Date startTime = new Date()
     def responseTime
     def requestInfoLog
-    def status = 200
+    def httpStatus = 200
 
     def contentType
     def buffer
@@ -407,15 +409,15 @@ class WebCoverageService
     {
       contentType = 'application/vnd.ogc.se_xml'
       buffer = createErrorMessage( e )
-      status = 400
+      httpStatus = 400
     }
 
     Date endTime = new Date()
     responseTime = Math.abs(startTime.getTime() - endTime.getTime())
 
-    requestInfoLog = new JsonBuilder(timestamp: startTime.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+    requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
             requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
-            status: status, endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"),
+            httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
             responseTime: responseTime, responseSize: buffer.toString().bytes.length)
 
     log.info requestInfoLog.toString()
@@ -430,7 +432,7 @@ class WebCoverageService
     Date startTime = new Date()
     def responseTime
     def requestInfoLog
-    def status = 200
+    def httpStatus = 200
 
     def contentType
     def buffer
@@ -471,15 +473,15 @@ class WebCoverageService
     {
       contentType = 'application/vnd.ogc.se_xml'
       buffer = createErrorMessage( e )?.bytes
-      status = 400
+      httpStatus = 400
     }
 
     Date endTime = new Date()
     responseTime = Math.abs(startTime.getTime() - endTime.getTime())
 
-    requestInfoLog = new JsonBuilder(timestamp: startTime.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+    requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
             requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
-            width: wcsParams?.width, height: wcsParams?.height, bbox: wcsParams?.bbox, status: status, endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"),
+            width: wcsParams?.width, height: wcsParams?.height, bbox: wcsParams?.bbox, httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
             responseTime: responseTime, responseSize: buffer.toString().bytes.length)
 
     log.info requestInfoLog.toString()
