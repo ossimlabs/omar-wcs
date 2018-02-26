@@ -104,8 +104,8 @@ class WcsController
       @ApiImplicitParam( name = 'filter', value = 'Filter', paramType = 'query', dataType = 'string', required = false ),
       @ApiImplicitParam( name = 'crs', value = 'Coordinate Reference System', defaultValue = "epsg:4326", paramType = 'query', dataType = 'string', required = true ),
       @ApiImplicitParam( name = 'bbox', value = 'Bounding box', defaultValue = "-180,-90,180,90", paramType = 'query', dataType = 'string', required = true ),
-      @ApiImplicitParam( name = 'width', value = 'Width of result image', defaultValue = "1024", paramType = 'query', dataType = 'int', required = true ),
-      @ApiImplicitParam( name = 'height', value = 'Height of result image', defaultValue = "512", paramType = 'query', dataType = 'int', required = true ),
+      @ApiImplicitParam( name = 'width', value = 'Width of result image', defaultValue = "1024", paramType = 'query', dataType = 'integer', required = true ),
+      @ApiImplicitParam( name = 'height', value = 'Height of result image', defaultValue = "512", paramType = 'query', dataType = 'integer', required = true ),
       @ApiImplicitParam( name = 'format', value = 'Format Type of result image', defaultValue = "GeoTIFF", allowableValues = "GeoTIFF", paramType = 'query', dataType = 'string', required = true )
   ] )
   def getCoverage(GetCoverageRequest wcsParams)
