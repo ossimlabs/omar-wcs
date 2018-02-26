@@ -1,10 +1,5 @@
 package omar.wcs
 
-// import com.wordnik.swagger.annotations.Api
-// import com.wordnik.swagger.annotations.ApiImplicitParam
-// import com.wordnik.swagger.annotations.ApiImplicitParams
-// import com.wordnik.swagger.annotations.ApiOperation
-
 import io.swagger.annotations.*
 
 import omar.core.BindUtil
@@ -27,22 +22,14 @@ class WcsController
     switch ( operation?.value?.toUpperCase() )
     {
     case "GETCAPABILITIES":
-//      println "GETCAPABILITIES"
       forward action: 'getCapabilities'
       break
     case "DESCRIBECOVERAGE":
-//      println "DESCRIBECOVERAGE"
       forward action: 'describeCoverage'
       break
     case "GETCOVERAGE":
-//      println "GETCOVERAGE"
       forward action: 'getCoverage'
       break
-//    default:
-//      println "default"
-//      def results = proxyWebCoverageService.getCapabilities( params )
-//
-//      render contentType: results.contentType, text: results.buffer
     }
   }
 
