@@ -1,10 +1,5 @@
 package omar.wcs
 
-// import com.wordnik.swagger.annotations.Api
-// import com.wordnik.swagger.annotations.ApiImplicitParam
-// import com.wordnik.swagger.annotations.ApiImplicitParams
-// import com.wordnik.swagger.annotations.ApiOperation
-
 import io.swagger.annotations.*
 
 import omar.core.BindUtil
@@ -27,22 +22,14 @@ class WcsController
     switch ( operation?.value?.toUpperCase() )
     {
     case "GETCAPABILITIES":
-//      println "GETCAPABILITIES"
       forward action: 'getCapabilities'
       break
     case "DESCRIBECOVERAGE":
-//      println "DESCRIBECOVERAGE"
       forward action: 'describeCoverage'
       break
     case "GETCOVERAGE":
-//      println "GETCOVERAGE"
       forward action: 'getCoverage'
       break
-//    default:
-//      println "default"
-//      def results = proxyWebCoverageService.getCapabilities( params )
-//
-//      render contentType: results.contentType, text: results.buffer
     }
   }
 
@@ -104,8 +91,8 @@ class WcsController
       @ApiImplicitParam( name = 'filter', value = 'Filter', paramType = 'query', dataType = 'string', required = false ),
       @ApiImplicitParam( name = 'crs', value = 'Coordinate Reference System', defaultValue = "epsg:4326", paramType = 'query', dataType = 'string', required = true ),
       @ApiImplicitParam( name = 'bbox', value = 'Bounding box', defaultValue = "-180,-90,180,90", paramType = 'query', dataType = 'string', required = true ),
-      @ApiImplicitParam( name = 'width', value = 'Width of result image', defaultValue = "1024", paramType = 'query', dataType = 'int', required = true ),
-      @ApiImplicitParam( name = 'height', value = 'Height of result image', defaultValue = "512", paramType = 'query', dataType = 'int', required = true ),
+      @ApiImplicitParam( name = 'width', value = 'Width of result image', defaultValue = "1024", paramType = 'query', dataType = 'integer', required = true ),
+      @ApiImplicitParam( name = 'height', value = 'Height of result image', defaultValue = "512", paramType = 'query', dataType = 'integer', required = true ),
       @ApiImplicitParam( name = 'format', value = 'Format Type of result image', defaultValue = "GeoTIFF", allowableValues = "GeoTIFF", paramType = 'query', dataType = 'string', required = true )
   ] )
   def getCoverage(GetCoverageRequest wcsParams)

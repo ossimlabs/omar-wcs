@@ -1,19 +1,17 @@
 package omar.wcs
 
-import geoscript.filter.Filter
 import geoscript.workspace.Workspace
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
+import groovy.json.JsonBuilder
 import groovy.xml.StreamingMarkupBuilder
 
 import geoscript.geom.Bounds
-import geoscript.layer.Format
-import geoscript.layer.Shapefile
 import geoscript.render.Map as GeoScriptMap
-import geoscript.style.RasterSymbolizer
 import omar.geoscript.LayerInfo
-import org.geotools.map.GridReaderLayer
 
-@Transactional( readOnly = true )
+import omar.core.DateUtil
+
+@Transactional(readOnly = true)
 class WebCoverageService
 {
   def grailsLinkGenerator
@@ -36,7 +34,12 @@ class WebCoverageService
 
   def getCapabilities(GetCapabilitiesRequest wcsParams)
   {
-//    println wcsParams
+    def requestType = "GET"
+    def requestMethod = "GetCapabilities"
+    Date startTime = new Date()
+    def responseTime
+    def requestInfoLog
+    def httpStatus = 200
 
     def contentType
     def buffer
@@ -159,6 +162,16 @@ class WebCoverageService
           {
             contentType = 'application/vnd.ogc.se_xml'
             buffer = createErrorMessage( e )
+            httpStatus = 400
+            Date endTime = new Date()
+            responseTime = Math.abs(startTime.getTime() - endTime.getTime())
+
+            requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
+                    requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
+                    httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
+                    responseTime: responseTime, responseSize: buffer.toString().bytes.length)
+
+            log.info requestInfoLog.toString()
             return [contentType: contentType, buffer: buffer]
           }
 
@@ -193,7 +206,19 @@ class WebCoverageService
     {
       contentType = 'application/vnd.ogc.se_xml'
       buffer = createErrorMessage( e )
+      httpStatus = 400
     }
+
+
+    Date endTime = new Date()
+    responseTime = Math.abs(startTime.getTime() - endTime.getTime())
+
+    requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
+            requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
+            httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
+            responseTime: responseTime, responseSize: buffer.toString().bytes.length)
+
+    log.info requestInfoLog.toString()
 
     [contentType: contentType, buffer: buffer]
   }
@@ -275,7 +300,12 @@ class WebCoverageService
 
   def describeCoverage(DescribeCoverageRequest wcsParams)
   {
-//    println wcsParams
+    def requestType = "GET"
+    def requestMethod = "DescribeCoverage"
+    Date startTime = new Date()
+    def responseTime
+    def requestInfoLog
+    def httpStatus = 200
 
     def contentType
     def buffer
@@ -296,8 +326,6 @@ class WebCoverageService
         )
 
         def layers = getLayers( wcsParams )
-
-//      println layer
 
         wcs.CoverageDescription( version: "1.0.0",
             'xsi:schemaLocation': "http://www.opengis.net/wcs ${schemaLocation}" ) {
@@ -381,14 +409,30 @@ class WebCoverageService
     {
       contentType = 'application/vnd.ogc.se_xml'
       buffer = createErrorMessage( e )
+      httpStatus = 400
     }
+
+    Date endTime = new Date()
+    responseTime = Math.abs(startTime.getTime() - endTime.getTime())
+
+    requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
+            requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
+            httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
+            responseTime: responseTime, responseSize: buffer.toString().bytes.length)
+
+    log.info requestInfoLog.toString()
 
     [contentType: contentType, buffer: buffer]
   }
 
   def getCoverage(GetCoverageRequest wcsParams)
   {
-//    println wcsParams
+    def requestType = "GET"
+    def requestMethod = "GetCoverage"
+    Date startTime = new Date()
+    def responseTime
+    def requestInfoLog
+    def httpStatus = 200
 
     def contentType
     def buffer
@@ -405,8 +449,6 @@ class WebCoverageService
       coverageLayers?.each { coverageBbox = coverageBbox.expand( it.bbox ) }
 
       def bbox = viewBbox.intersection( coverageBbox )
-
-//    println bbox
 
       def map = new GeoScriptMap(
           fixAspectRatio: false,
@@ -431,8 +473,18 @@ class WebCoverageService
     {
       contentType = 'application/vnd.ogc.se_xml'
       buffer = createErrorMessage( e )?.bytes
+      httpStatus = 400
     }
 
+    Date endTime = new Date()
+    responseTime = Math.abs(startTime.getTime() - endTime.getTime())
+
+    requestInfoLog = new JsonBuilder(timestamp: DateUtil.formatUTC(startTime), requestType: requestType,
+            requestMethod: requestMethod, contentType: contentType, filter: wcsParams?.filter, coverage: wcsParams?.coverage,
+            width: wcsParams?.width, height: wcsParams?.height, bbox: wcsParams?.bbox, httpStatus: httpStatus, endTime: DateUtil.formatUTC(endTime),
+            responseTime: responseTime, responseSize: buffer.toString().bytes.length)
+
+    log.info requestInfoLog.toString()
 
     [contentType: contentType, buffer: buffer]
   }
