@@ -8,9 +8,11 @@ buildscript {
     apply from: System.env.OMAR_COMMON_PROPERTIES
   }
   repositories {
-    mavenLocal()
     maven { url "${ossimMavenProxy}" }
-    maven { url "https://repo.grails.org/grails/core" }
+    if( Boolean.parseBoolean( System.env.WWW_CONNECTED ) ) {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
   }
   dependencies {
     classpath "org.grails:grails-gradle-plugin:$grailsVersion"
@@ -49,9 +51,11 @@ assets {
 }
 
 repositories {
-  mavenLocal()
   maven { url "${ossimMavenProxy}" }
-  maven { url "https://repo.grails.org/grails/core" }
+  if( Boolean.parseBoolean( System.env.WWW_CONNECTED ) ) {
+    mavenLocal()
+    maven { url "https://repo.grails.org/grails/core" }
+  }
 }
 
 dependencyManagement {
@@ -103,7 +107,7 @@ dependencies {
   //
 
   compile "de.codecentric:spring-boot-admin-starter-client:${springBootAdminStarterClientV}"
-  
+
   compile "org.springframework.cloud:spring-cloud-starter-config"
   compile "org.springframework.cloud:spring-cloud-starter-eureka"
 
