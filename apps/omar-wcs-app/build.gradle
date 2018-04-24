@@ -9,7 +9,7 @@ buildscript {
   }
   repositories {
     maven { url "${ossimMavenProxy}" }
-    if( Boolean.parseBoolean( System.env.WWW_CONNECTED ) ) {
+    if( !System.env.WWW_CONNECTED || Boolean.parseBoolean( System.env.WWW_CONNECTED ) ) {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
     }
@@ -52,7 +52,7 @@ assets {
 
 repositories {
   maven { url "${ossimMavenProxy}" }
-  if( Boolean.parseBoolean( System.env.WWW_CONNECTED ) ) {
+  if( !System.env.WWW_CONNECTED || Boolean.parseBoolean( System.env.WWW_CONNECTED ) ) {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
   }
