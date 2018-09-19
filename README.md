@@ -1,6 +1,6 @@
 # omar-wcs
 
-[![Build Status](https://jenkins.radiantbluecloud.com/buildStatus/icon?job=omar-wcs-dev)]()
+[![Build Status](https://jenkins.ossim.io/buildStatus/icon?job=omar-wcs-dev)]()
 
 ## Description
 
