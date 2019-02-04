@@ -4,13 +4,9 @@ pluginManagement {
     gradlePluginPortal()
   }
 }
-def final O2_DEV_HOME = System.getenv('O2_DEV_HOME')
 
-if ( O2_DEV_HOME ) {
+include 'omar-wcs-app',
+        'omar-wcs-plugin'
 
-   include 'omar-wcs-app',
-           'omar-wcs-plugin'
-
-   project(':omar-wcs-app').projectDir = "${O2_DEV_HOME}/omar-wcs/apps/omar-wcs-app" as File
-   project(':omar-wcs-plugin').projectDir = "${O2_DEV_HOME}/omar-wcs/plugins/omar-wcs-plugin" as File
-}
+project(':omar-wcs-app').projectDir = "${rootProject.projectDir}/apps/omar-wcs-app" as File
+project(':omar-wcs-plugin').projectDir = "${rootProject.projectDir}/plugins/omar-wcs-plugin" as File
