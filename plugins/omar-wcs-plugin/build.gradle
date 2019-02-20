@@ -65,6 +65,7 @@ dependencies {
   }
   
   compile "io.swagger:swagger-annotations:1.5.15"
+  compile "io.swagger:swagger-models:1.5.15"
   compile( "org.geoscript:geoscript-groovy:1.10.0" ) {
     exclude module: "ehcache"
     exclude module: "groovy-all"
