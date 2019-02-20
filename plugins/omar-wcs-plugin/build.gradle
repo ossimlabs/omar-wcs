@@ -67,6 +67,7 @@ dependencies {
   compile "io.swagger:swagger-annotations:1.5.15"
   compile "io.swagger:swagger-models:1.5.15"
   compile "org.grails.plugins:actuator-ui:1.1"
+  compile "org.ossim:joms:1.9.0-${buildVersionTag}"
 
   compile( "org.geoscript:geoscript-groovy:1.10.0" ) {
     exclude module: "ehcache"
