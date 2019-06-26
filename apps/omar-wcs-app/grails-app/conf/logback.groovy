@@ -20,6 +20,7 @@ appender('JSON', ConsoleAppender) {
 
 root(ERROR, ['STDOUT'])
 logger("omar.wcs.WebCoverageService", INFO, ['JSON'], false)
+logger('wcs', INFO, ['STDOUT'], false)
 
 def targetDir = BuildSettings.TARGET_DIR
 if (Environment.isDevelopmentMode() && targetDir) {
