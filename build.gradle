@@ -27,6 +27,20 @@ subprojects { project ->
         apply plugin: "idea"
         apply plugin: "java"
 
+        if ( isGrailsApp )        
+        {
+            apply plugin: "org.grails.grails-web"
+        }
+        else if ( isGrailsPlugin )
+        {
+            apply plugin: "org.grails.grails-plugin"
+            apply plugin: "org.grails.grails-plugin-publish"
+            apply plugin: "maven-publish"
+        }
+
+        apply plugin: "org.grails.grails-gsp"
+        apply plugin: "asset-pipeline"
+
         io.ossim.gradleDefaults.Variables.setAdditionalVariables(project)
         io.ossim.gradleDefaults.Variables.setVersionVariables(project)
         version "${buildVersion}-${buildVersionTag}"
@@ -45,20 +59,7 @@ subprojects { project ->
             io.ossim.gradleDefaults.Publications.addPublication(project, groupName, name, "${buildVersion}-${buildVersionTag}")
             io.ossim.gradleDefaults.Publications.addRepository(project, mavenPublishUrl, mavenRepoUsername, mavenRepoPassword)
         }
-        
-        if ( isGrailsApp )        
-        {
-            apply plugin: "org.grails.grails-web"
-        }
-        else if ( isGrailsPlugin )
-        {
-            apply plugin: "org.grails.grails-plugin"
-            apply plugin: "org.grails.grails-plugin-publish"
-        }
 
-        apply plugin: "org.grails.grails-gsp"
-        apply plugin: "asset-pipeline"
-        apply plugin: "maven-publish"
 
         repositories {
             mavenLocal()
