@@ -21,8 +21,8 @@ omar:
         url: http://localhost:8083/omar-geoscript/geoscriptApi
 
 # Set the context path for the application.
-#server:
-#  contextPath: /omar-wcs
+server:
+  contextPath: /omar-wcs
 
 # Define the http protocols that swagger can use
 swagger:
