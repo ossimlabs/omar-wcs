@@ -1,5 +1,6 @@
 package omar.wcs
 
+import geoscript.workspace.PostGIS
 import geoscript.workspace.Workspace
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonBuilder
@@ -255,8 +256,8 @@ class WebCoverageService
 
         if ( id )
         {
-          def image = layer?.getFeatures( filter: "in (${id})" )?.first()
-
+          def f = "in (${id})"
+          def image = layer?.getFeatures( filter: f )
           if ( image )
           {
             images << convertImage( prefix, image )
@@ -291,7 +292,7 @@ class WebCoverageService
         width: image.width, height: image.height,
         numBands: image.number_of_bands,
         filename: image.filename,
-        entry: image.entry_id?.toInteger()
+        entry: image.entry?.toInteger()
     ]
 
 //    println metadata
@@ -425,7 +426,142 @@ class WebCoverageService
     [contentType: contentType, buffer: buffer]
   }
 
-  def getCoverage(GetCoverageRequest wcsParams)
+
+def createWorkspace()
+{
+    def config = grailsApplication.config
+    def url = config.dataSource.url
+    def username = config.dataSource.username
+    def password = config.dataSource.password
+
+    def jdbcURL = url =~ /^jdbc:postgresql:(\/\/((.+)(:(\d+)))\/)?(.+)$/  
+
+    new PostGIS( jdbcURL[0][6], 
+      user: username ?: 'postgres',
+      password: password ?: 'postgres',
+      host: jdbcURL[0][3] ?:'localhost',
+      port: jdbcURL[0][5] ?: '5432'
+    )
+}
+
+
+
+def getImageInfo( def typeName, def filter ) 
+{
+  // println "${typeName} ${filter}"
+
+    def imageInfo
+    
+    Workspace.withWorkspace( createWorkspace()) { w ->
+        def x =  typeName?.split(':')
+        def prefix, layerName
+
+        if ( x.size() == 2 )
+        {
+          prefix = x[0]
+          layerName = x[1]
+        }
+        else
+        {
+          layerName = typeName
+        }
+
+        def rasterEntry = w[layerName].getFeatures(
+            filter: filter,
+            max: 1
+        )?.first()
+        
+        imageInfo = rasterEntry.attributes
+    }
+    
+    imageInfo
+}
+
+def getCoverage( GetCoverageRequest wcsParams ) 
+{
+  // println wcsParams
+
+    def ext = [
+        'image/png': '.png',
+        'image/jpeg': '.jpg',
+        'image/tiff': '.tif',
+        'image/nitf': '.ntf'
+    ]
+    
+    def writers = [
+        'image/png': 'ossim_png',
+        'image/jpeg': 'jpeg',
+        'image/tiff': 'tiff_tiled_band_separate',
+        'image/nitf': 'ossim_kakadu_nitf_j2k'
+    ]    
+    
+    def outputFile = File.createTempFile( 'chipper-', ext[wcsParams.format], '/tmp' as File )
+    // println  outputFile   
+    def viewBbox = new Bounds( *( wcsParams?.bbox?.split( ',' )*.toDouble() ), wcsParams.crs )
+    // println  viewBbox   
+
+    def imageInfo = getImageInfo( wcsParams.coverage, wcsParams.filter ) 
+
+    // def imageInfo = getLayers(wcsParams)
+
+    // if ( ! imageInfo ) {
+    //   throw new Exception("No image matching filter found!")
+    // }
+
+    // println imageInfo
+    
+    def cmd = [
+        'ossim-chipper',
+        '--op', 'ortho',
+        '--bands', 'default',
+        '--cut-wms-bbox', [ 'minX', 'minY', 'maxX', 'maxY' ].collect { viewBbox[it] }.join( ',' ),
+        '--cut-width', wcsParams.width,
+        '--cut-height', wcsParams.height,
+        '--srs', viewBbox.proj.srs,
+        '--writer', writers[wcsParams.format],
+        '--writer-prop', 'create_external_geometry=false',
+        '--histogram-op', 'auto-minmax',
+        imageInfo.filename,
+        '--entry', imageInfo.entry_id,
+        outputFile.absolutePath,
+    ]
+    
+    if ( wcsParams.format == 'image/png' && imageInfo.bit_depth > 8 )
+    {
+        cmd << '--scale-to-8-bit'
+    }
+    
+    if ( wcsParams.width >= imageInfo.width && wcsParams.height >= imageInfo.height )
+    {                 
+        cmd << '-K'
+        cmd << "tile_size='1024 1024'"
+    }        
+    
+    println cmd.join( ' ' )
+    
+    def start = System.currentTimeMillis()
+    def proc = cmd.execute()
+    
+    proc.consumeProcessOutput()
+    
+    int exitCode = proc.waitFor()
+    def stop = System.currentTimeMillis()
+    
+    println "${ stop - start }"
+    
+    if ( !exitCode )
+    {
+        [ contentType: wcsParams.format, file: outputFile ]
+    }
+    else
+    {
+        [ contentType: wcsParams.format, text: "ERROR!" ]
+    }
+}
+
+
+
+  def getCoverageOLD(GetCoverageRequest wcsParams)
   {
     def requestType = "GET"
     def requestMethod = "GetCoverage"
