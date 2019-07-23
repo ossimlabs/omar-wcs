@@ -494,8 +494,14 @@ def getCoverage( GetCoverageRequest wcsParams )
         'image/tiff': 'tiff_tiled_band_separate',
         'image/nitf': 'ossim_kakadu_nitf_j2k'
     ]    
+
+    def tempDir = grailsApplication.config.omar.wcs.tempDir ?: '/tmp'
     
-    def outputFile = File.createTempFile( 'chipper-', ext[wcsParams.format], '/tmp' as File )
+    if ( ! tempDir.exists() ) {
+      tempDir.mkdirs()
+    }
+    
+    def outputFile = File.createTempFile( 'chipper-', ext[wcsParams.format], tempDir as File )
     // println  outputFile   
     def viewBbox = new Bounds( *( wcsParams?.bbox?.split( ',' )*.toDouble() ), wcsParams.crs )
     // println  viewBbox   
