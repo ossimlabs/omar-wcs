@@ -105,6 +105,7 @@ class WcsController
 
     def results = webCoverageService.getCoverage( wcsParams )
 
-    render contentType: results.contentType, file: results.buffer
+    render results
+    results?.file?.delete()
   }
 }

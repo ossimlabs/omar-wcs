@@ -35,11 +35,11 @@ subprojects { project ->
         {
             apply plugin: "org.grails.grails-plugin"
             apply plugin: "org.grails.grails-plugin-publish"
+            apply plugin: "maven-publish"
         }
 
         apply plugin: "org.grails.grails-gsp"
         apply plugin: "asset-pipeline"
-        apply plugin: "maven-publish"
 
         io.ossim.gradleDefaults.Variables.setAdditionalVariables(project)
         io.ossim.gradleDefaults.Variables.setVersionVariables(project)
@@ -59,7 +59,7 @@ subprojects { project ->
             io.ossim.gradleDefaults.Publications.addPublication(project, groupName, name, "${buildVersion}-${buildVersionTag}")
             io.ossim.gradleDefaults.Publications.addRepository(project, mavenPublishUrl, mavenRepoUsername, mavenRepoPassword)
         }
-        
+
         repositories {
             mavenLocal()
             maven { url ossimMavenProxy }
