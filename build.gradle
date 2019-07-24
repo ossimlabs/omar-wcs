@@ -60,7 +60,6 @@ subprojects { project ->
             io.ossim.gradleDefaults.Publications.addRepository(project, mavenPublishUrl, mavenRepoUsername, mavenRepoPassword)
         }
 
-
         repositories {
             mavenLocal()
             maven { url ossimMavenProxy }
