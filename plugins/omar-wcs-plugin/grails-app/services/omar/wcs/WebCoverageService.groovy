@@ -524,7 +524,7 @@ def getCoverage( GetCoverageRequest wcsParams )
     }
     catch ( e ) 
     {
-      [ contentType: wcsParams.format, text: "ServiceExceptionReport: No image matching filter found!" ]
+      return [ contentType: wcsParams.format, text: "ServiceExceptionReport: No image matching filter found!" ]
     }
 
     // println imageInfo
