@@ -515,9 +515,9 @@ def getCoverage( GetCoverageRequest wcsParams )
 
     // def imageInfo = getLayers(wcsParams)
 
-    // if ( ! imageInfo ) {
-    //   throw new Exception("No image matching filter found!")
-    // }
+    if ( ! imageInfo ) {
+      throw new IOException("ServiceExceptionReport: No image matching filter found!")
+    }
 
     // println imageInfo
     
