@@ -469,9 +469,12 @@ def getImageInfo( def typeName, def filter )
         def rasterEntry = w[layerName].getFeatures(
             filter: filter,
             max: 1
-        )?.first()
-        
-        imageInfo = rasterEntry.attributes
+        )
+
+        if (rasterEntry.size() > 0)
+        {
+          imageInfo = rasterEntry.first().attributes
+        }
     }
     
     imageInfo
