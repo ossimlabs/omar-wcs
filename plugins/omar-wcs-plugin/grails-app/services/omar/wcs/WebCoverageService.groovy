@@ -517,7 +517,7 @@ def getCoverage( GetCoverageRequest wcsParams )
 
     if ( ! imageInfo )
     {
-      return [ contentType: text/plain, text: "ServiceExceptionReport: No image matching filter found!" ]
+      return [ contentType: "text/plain", text: "ServiceExceptionReport: No image matching filter found!" ]
     }
 
     // println imageInfo

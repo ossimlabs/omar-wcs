@@ -82,7 +82,7 @@ class WcsController
   }
 
   @ApiOperation( value = "Get image from the server", 
-                 produces = 'image/tiff,application/xml,application/json',
+                 produces = 'image/tiff,application/xml,application/json,text/plain',
                  httpMethod = "GET" )
   @ApiImplicitParams( [
       @ApiImplicitParam( name = 'service', value = 'OGC service type', allowableValues = "WCS", defaultValue = 'WCS', paramType = 'query', dataType = 'string', required = true ),
