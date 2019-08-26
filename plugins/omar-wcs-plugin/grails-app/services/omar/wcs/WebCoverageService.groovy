@@ -233,11 +233,11 @@ class WebCoverageService
 //      println coverage
       def prefix, layerName, id
 
-      if ( coverage.size() == 3 )
+      if ( coverage?.size() == 3 )
       {
         (prefix, layerName, id) = coverage
       }
-      else if ( coverage.size() == 2 )
+      else if ( coverage?.size() == 2 )
       {
         (prefix, layerName) = coverage
       }
@@ -456,7 +456,7 @@ def getImageInfo( def typeName, def filter )
         def x =  typeName?.split(':')
         def prefix, layerName
 
-        if ( x.size() == 2 )
+        if ( x?.size() == 2 )
         {
           prefix = x[0]
           layerName = x[1]
@@ -471,7 +471,7 @@ def getImageInfo( def typeName, def filter )
             max: 1
         )
 
-        if (rasterEntry.size() > 0)
+        if (rasterEntry?.size() > 0)
         {
           imageInfo = rasterEntry.first().attributes
         }
