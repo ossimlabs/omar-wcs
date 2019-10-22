@@ -4,11 +4,7 @@ properties([
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
     ]),
     pipelineTriggers([
-            [$class: "GitHubPushTrigger"],
-            [
-                $class: 'jenkins.triggers.ReverseBuildTrigger',
-                upstreamProjects: "ossim-batch-test-multibranch/${BRANCH_NAME}", threshold: hudson.model.Result.SUCCESS
-            ]
+            [$class: "GitHubPushTrigger"]
     ]),
     [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/ossimlabs/omar-wcs'],
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '20')),
@@ -36,7 +32,7 @@ node("${BUILD_NODE}"){
 
     stage ("Assemble") {
         sh """
-        gradle assemble \
+        ./gradlew assemble \
             -PossimMavenProxy=${OSSIM_MAVEN_PROXY}
         """
         archiveArtifacts "plugins/*/build/libs/*.jar"
@@ -51,7 +47,7 @@ node("${BUILD_NODE}"){
                         passwordVariable: 'MAVEN_REPO_PASSWORD']])
         {
             sh """
-            gradle publish \
+            ./gradlew publish \
                 -PossimMavenProxy=${OSSIM_MAVEN_PROXY}
             """
         }
@@ -66,7 +62,7 @@ node("${BUILD_NODE}"){
         {
             // Run all tasks on the app. This includes pushing to OpenShift and S3.
             sh """
-            gradle pushDockerImage \
+            ./gradlew pushDockerImage \
                 -PossimMavenProxy=${OSSIM_MAVEN_PROXY}
             """
         }
@@ -82,7 +78,7 @@ node("${BUILD_NODE}"){
             {
                 // Run all tasks on the app. This includes pushing to OpenShift and S3.
                 sh """
-                    gradle openshiftTagImage \
+                    ./gradlew openshiftTagImage \
                         -PossimMavenProxy=${OSSIM_MAVEN_PROXY}
 
                 """
@@ -91,7 +87,7 @@ node("${BUILD_NODE}"){
     } catch (e) {
         echo e.toString()
     }
-        
+
     stage("Clean Workspace")
     {
         if ("${CLEAN_WORKSPACE}" == "true")

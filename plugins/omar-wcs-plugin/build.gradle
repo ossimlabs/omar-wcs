@@ -1,18 +1,19 @@
 if ( System.getenv('O2_INLINE_BUILD') ) {
-  grails {
-    plugins {
-      compile project(":omar-oms-plugin")
-      compile project(":omar-hibernate-spatial-plugin")
-      compile project(":omar-geoscript-plugin")
+    grails {
+        plugins {
+            if ( System.getenv('O2_INLINE_BUILD') ) {
+               compile project(":omar-oms-plugin")
+               compile project(":omar-hibernate-spatial-plugin")
+               compile project(":omar-geoscript-plugin")
+            }
+        }
     }
-  }
 }
-
 dependencies {
-  if ( ! System.getenv('O2_INLINE_BUILD') ) {
-    compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
-    compile "io.ossim.omar.plugins:omar-oms-plugin:${latestGradleIdentifier}"
-    compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
-    compile "io.ossim.omar.plugins:omar-geoscript-plugin:${latestGradleIdentifier}"
-  }
+    //compile project( ":${ rootProject.name }-lib" )
+    if ( ! System.getenv('O2_INLINE_BUILD') ) {
+       compile "io.ossim.omar.plugins:omar-oms-plugin:+"
+       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:+"
+       compile "io.ossim.omar.plugins:omar-geoscript-plugin:+"
+    }
 }
