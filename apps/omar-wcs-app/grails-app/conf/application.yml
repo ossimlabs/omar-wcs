@@ -141,6 +141,12 @@ server:
         context-path: /omar-wcs
     contextPath: ${server.servlet.context-path}
 
+
+swagger:
+    schemes:
+        - HTTPS
+        - HTTP
+
 management:
   endpoints:
     web:
