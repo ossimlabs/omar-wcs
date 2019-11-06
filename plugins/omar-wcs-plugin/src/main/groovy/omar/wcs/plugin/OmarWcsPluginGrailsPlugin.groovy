@@ -1,18 +1,18 @@
-package omar.wcs
+package omar.wcs.plugin
 
 import grails.plugins.*
 
-class OmarWcsGrailsPlugin extends Plugin {
+class OmarWcsPluginGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "3.1.10 > *"
+    def grailsVersion = "4.0.0 > *"
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
         "grails-app/views/error.gsp"
     ]
 
     // TODO Fill in these fields
-    def title = "Omar Wcs" // Headline display name of the plugin
+    def title = "Omar Wcs Plugin" // Headline display name of the plugin
     def author = "Your name"
     def authorEmail = ""
     def description = '''\
@@ -21,7 +21,7 @@ Brief summary/description of the plugin.
     def profiles = ['web']
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/omar-wcs"
+    def documentation = "http://grails.org/plugin/omar-wcs-plugin"
 
     // Extra (optional) plugin metadata
 
