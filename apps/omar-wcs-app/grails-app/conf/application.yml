@@ -104,7 +104,7 @@ dataSource:
     username: postgres
     password: ${omarDb.password}
     dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
-    
+
 environments:
     development:
         dataSource:
@@ -156,7 +156,7 @@ management:
   endpoint:
     env:
       enabled: true
-      sensitive: fasle
+      sensitive: false
     health:
       enabled: true
     
