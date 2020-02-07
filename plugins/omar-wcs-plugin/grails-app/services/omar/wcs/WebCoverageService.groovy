@@ -500,7 +500,7 @@ def getCoverage( GetCoverageRequest wcsParams )
 
 
 
-    def tempDir = new File( grailsApplication.config.omar.wcs.tempDir ?: '/tmp' )
+    def tempDir = new File( grailsApplication.config.omar.wcs.tempDir ?: "${System.getenv('user.dir')}/tmp" )
     
     if ( ! tempDir.exists() ) {
       tempDir.mkdirs()
