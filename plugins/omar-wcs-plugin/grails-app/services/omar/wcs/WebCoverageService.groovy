@@ -497,7 +497,7 @@ def getCoverage( GetCoverageRequest wcsParams )
         'image/png': 'ossim_png',
         'image/jpeg': 'jpeg',
         'image/tiff': 'tiff_tiled_band_separate',
-        'image/nitf': 'ossim_kakadu_nitf_j2k'
+        'image/nitf': 'ossim_kakadu_nitf_j2k',
         'NITF': 'ossim_kakadu_nitf_j2k',
         'GeoTIFF': 'tiff_tiled_band_separate'
     ]    
