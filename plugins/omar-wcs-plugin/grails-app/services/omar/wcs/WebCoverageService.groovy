@@ -488,7 +488,9 @@ def getCoverage( GetCoverageRequest wcsParams )
         'image/png': '.png',
         'image/jpeg': '.jpg',
         'image/tiff': '.tif',
-        'image/nitf': '.ntf'
+        'image/nitf': '.ntf',
+        'NITF': '.ntf',
+        'GeoTIFF': '.tif'
     ]
     
     def writers = [
@@ -496,11 +498,13 @@ def getCoverage( GetCoverageRequest wcsParams )
         'image/jpeg': 'jpeg',
         'image/tiff': 'tiff_tiled_band_separate',
         'image/nitf': 'ossim_kakadu_nitf_j2k'
+        'NITF': 'ossim_kakadu_nitf_j2k',
+        'GeoTIFF': 'tiff_tiled_band_separate'
     ]    
 
 
 
-    def tempDir = new File( grailsApplication.config.omar.wcs.tempDir ?: "${System.getProperty('user.dir')}/tmp" )
+    def tempDir = new File( grailsApplication.config.omar.wcs.tempDir ?: "/tmp" )
     
     if ( ! tempDir.exists() ) {
       tempDir.mkdirs()
