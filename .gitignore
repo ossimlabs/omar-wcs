@@ -14,3 +14,5 @@ prodDb.mv.db
 packaged-chart
 *.lock
 charts/*.tgz
+apps/omar-wcs-app/bin
+plugins/omar-wcs-plugin/bin
