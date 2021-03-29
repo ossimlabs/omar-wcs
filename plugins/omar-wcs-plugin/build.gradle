@@ -12,8 +12,8 @@ if ( System.getenv('O2_INLINE_BUILD') ) {
 dependencies {
     //compile project( ":${ rootProject.name }-lib" )
     if ( ! System.getenv('O2_INLINE_BUILD') ) {
-       compile "io.ossim.omar.plugins:omar-oms-plugin:+"
-       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:+"
-       compile "io.ossim.omar.plugins:omar-geoscript-plugin:+"
+       compile "io.ossim.omar.plugins-RELEASE:omar-oms-plugin:+"
+       compile "io.ossim.omar.plugins-RELEASE:omar-hibernate-spatial-plugin:+"
+       compile "io.ossim.omar.plugins-RELEASE:omar-geoscript-plugin:+"
     }
 }
