@@ -24,6 +24,7 @@ subprojects { project ->
 
    project.ext {
      gitBranch = getCurrentGitBranch(project)
+       gitBranch = gitBranch == "HEAD" ? branchName : gitBranch
      buildVersionTag = gitBranch == "master" ? "RELEASE" : "SNAPSHOT"
     }
 
@@ -70,8 +71,8 @@ subprojects { project ->
               publishing {
                     publications {
                         "${project.name}" (MavenPublication) {
-                            group groupName
-                            groupId = groupName
+                            group "${groupName}-${buildVersionTag}"
+                            groupId = "${groupName}-${buildVersionTag}"
                             version project.version
                             from components.java
                         }
